@@ -1,0 +1,11 @@
+Q: Calculate the average price of all products in each category and display the results along with the category name.
+
+A:
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,avg,count
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+
+df = spark.read.csv("product.csv", header = True, inferSchema = True)
+new_df = df.groupBy("category").agg(avg("product_price").alias("average_price"))
+new_df.show()

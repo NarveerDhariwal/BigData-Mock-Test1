@@ -1,0 +1,11 @@
+Q:  Retrieve the names of all products that are currently out of stock from the "Products" table.
+
+A:
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,count
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+
+df = spark.read.csv("product.csv", header = True, inferSchema = True)
+new_df = df.filter(df.available_product == 0).select("product_name")
+new_df.show()

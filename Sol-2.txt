@@ -1,0 +1,9 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+
+df = spark.read.csv("sales.csv", header = True, inferSchema = True)
+new_df = df.groupBy(col("product_name")).sum(col("revenue"))
+
+new_df.printSchema()
+new_df.show()

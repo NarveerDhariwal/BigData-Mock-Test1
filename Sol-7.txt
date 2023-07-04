@@ -1,0 +1,11 @@
+Q: Find the total number of orders placed by each customer and display the results in descending order of the number of orders.
+
+A:
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,count
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+
+df = spark.read.csv("customer.csv", header = True, inferSchema = True)
+new_df = df.groupBy("customer_id").agg(count("order_placed").alias("count1")).orderBy("count1",ascending=True)
+new_df.show()

@@ -1,0 +1,46 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+
+schema = StructType([
+    StructField("emp_id", IntegerType(), nullable = False),
+    StructField("first_name", StringType(), nullable = False),
+    StructField("last_name", StringType(), nullable = False),
+    StructField("age", IntegerType(), nullable = False),
+    StructField("department", StringType(), nullable = False),
+])
+
+df = spark.read.csv("ds1.csv", header = True, schema = schema)
+
+df.printSchema()
+df.show(10)
+
+
+
+23/07/04 11:45:18 INFO InMemoryFileIndex: It took 196 ms to list leaf files for 1 paths.
+root
+ |-- emp_id: integer (nullable = true)
+ |-- first_name: string (nullable = true)
+ |-- last_name: string (nullable = true)
+ |-- age: integer (nullable = true)
+ |-- department: string (nullable = true)
+
+
+
+23/07/04 11:45:22 INFO CodeGenerator: Code generated in 29.464848 ms
++------+----------+---------+---+--------------+
+|emp_id|first_name|last_name|age|    department|
++------+----------+---------+---+--------------+
+|677509|      Lois|   Walker| 44|       Product|
+|940761|    Brenda| Robinson| 24|Human Resource|
+|428945|       Joe| Robinson| 57|       Product|
+|408351|     Diane|    Evans| 23|       Product|
+|193819|  Benjamin|  Russell| 77|       Product|
+|499687|   Patrick|   Bailey| 25|Human Resource|
+|539712|     Nancy|    Baker| 35|       Product|
+|380086|     Carol|   Murphy| 33|       Product|
+|477616|   Frances|    Young| 33|       Product|
+|162402|     Diana| Peterson| 34|       Product|
++------+----------+---------+---+--------------+
+only showing top 10 rows

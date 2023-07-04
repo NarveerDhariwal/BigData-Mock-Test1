@@ -1,0 +1,11 @@
+Q: Retrieve the top 5 customers who have spent the highest total amount on purchases.
+
+A:
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,avg,count,sum
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+
+df = spark.read.csv("customer.csv", header = True, inferSchema = True)
+new_df = df.groupBy("customer_name").agg(sum("price_paid").alias("total_spending")).orderBy("total_spending",ascending=False).limit(5)
+new_df.show()

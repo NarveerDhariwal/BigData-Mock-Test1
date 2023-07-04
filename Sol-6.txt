@@ -1,0 +1,14 @@
+Q: Retrieve all the customers from the "Customers" table whose age is greater than 25 and have made at least one purchase.
+
+A:
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("Mock Test").getOrCreate()
+schema = "name STRING, age INT, pruchased_item INT" 
+
+df = spark.read.csv("customer.csv", header=True, schema=schema")
+new_df = df.filter(df.age>25).filter(df.purchased_item >= 1)
+
+df.printSchema()
+df.show()
