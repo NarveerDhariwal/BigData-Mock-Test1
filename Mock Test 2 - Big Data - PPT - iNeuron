@@ -1,0 +1,26 @@
+1. Write an SQL query to find the second-highest salary from an "Employees" table.
+
+select max(salary) as second_max_salary from payment where salary not in (select max(salary) from payment)
+
+3. Write a Spark program to count the number of occurrences of each word in a given text file.
+
+Sample_file.txt: 
+I am studing in iNeuron
+I have enrolled for big data course in iNeuron
+
+Solution:
+
+>>> lines = spark.sparkContext.textFile("sample_file.txt")
+>>> lines.collect()
+['I am studing in iNeuron', 'I have enrolled for big data course in iNeuron']
+>>> words = lines.flatMap(lambda line: line.split(" "))
+>>> lines.collect()
+['I am studing in iNeuron', 'I have enrolled for big data course in iNeuron']
+>>> words.collect()
+['I', 'am', 'studing', 'in', 'iNeuron', 'I', 'have', 'enrolled', 'for', 'big', 'data', 'course', 'in', 'iNeuron']
+>>> word_count = words.map(lambda word: (word, 1))
+>>> word_count.collect()
+[('I', 1), ('am', 1), ('studing', 1), ('in', 1), ('iNeuron', 1), ('I', 1), ('have', 1), ('enrolled', 1), ('for', 1), ('big', 1), ('data', 1), ('course', 1), ('in', 1), ('iNeuron', 1)]
+>>> final_count = word_count.reduceByKey(lambda x,y: x+y)
+>>> final_count.collect()
+[('am', 1), ('studing', 1), ('in', 2), ('have', 1), ('enrolled', 1), ('I', 2), ('iNeuron', 2), ('for', 1), ('big', 1), ('data', 1), ('course', 1)]
